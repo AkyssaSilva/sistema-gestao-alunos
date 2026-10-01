@@ -1,0 +1,88 @@
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-title">
+    <header class="login-header">
+      <h1 id="login-title">Start Students</h1>
+      <p>Faça seu login para continuar</p>
+    </header>
+
+    <form class="login-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form-field">
+        <label for="nomeUsuario">Usuário</label>
+        <div class="input-shell" [class.input-shell-invalid]="form.controls.nomeUsuario.touched && form.controls.nomeUsuario.invalid">
+          <svg class="field-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4.5 21v-2a7.5 7.5 0 0 1 15 0v2" />
+          </svg>
+          <input
+            id="nomeUsuario"
+            formControlName="nomeUsuario"
+            type="text"
+            autocomplete="username"
+            placeholder="usuario123"
+            aria-describedby="usuario-error"
+          />
+        </div>
+        @if (form.controls.nomeUsuario.touched && form.controls.nomeUsuario.hasError('required')) {
+          <span class="field-error" id="usuario-error">Informe seu usuário.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="senha">Senha</label>
+        <div class="input-shell" [class.input-shell-invalid]="form.controls.senha.touched && form.controls.senha.invalid">
+          <svg class="field-icon lock-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.5" y="10" width="17" height="12" rx="2" />
+            <path d="M7.5 10V7a4.5 4.5 0 0 1 9 0v3" />
+          </svg>
+          <input
+            id="senha"
+            formControlName="senha"
+            [type]="showPassword() ? 'text' : 'password'"
+            autocomplete="current-password"
+            placeholder="••••••••"
+            aria-describedby="senha-error"
+          />
+          <button
+            class="visibility-button"
+            type="button"
+            [attr.aria-label]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+            (click)="showPassword.update((visible) => !visible)"
+          >
+            @if (showPassword()) {
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+                <path d="M9.9 5.2A10.7 10.7 0 0 1 12 5c5.2 0 8.8 4.1 10 7-.4 1-1.2 2.2-2.4 3.3M6.2 6.2C3.9 7.7 2.5 10 2 12c1.2 2.9 4.8 7 10 7 1 0 1.9-.2 2.8-.4" />
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            }
+          </button>
+        </div>
+        @if (form.controls.senha.touched && form.controls.senha.hasError('required')) {
+          <span class="field-error" id="senha-error">Informe sua senha.</span>
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <p class="form-error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button
+        class="submit-button"
+        type="submit"
+        [class.is-loading]="isSubmitting()"
+        [disabled]="form.invalid || isSubmitting()"
+      >
+        @if (isSubmitting()) {
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Acessando...</span>
+        } @else {
+          <span>Acessar</span>
+        }
+      </button>
+    </form>
+  </section>
+</main>

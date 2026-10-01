@@ -1,0 +1,119 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  background: #f5f7fb;
+}
+
+.workspace-header {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(20px, 6vw, 80px);
+  border-bottom: 1px solid #e1e6ef;
+  background: #fff;
+}
+
+.brand,
+.account-area,
+.logout-button {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 10px;
+  color: #172238;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 8px;
+  color: #fff;
+  background: #ed0011;
+  font-size: 17px;
+}
+
+.account-area {
+  gap: 16px;
+}
+
+.profile-label {
+  color: #65728a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.logout-button {
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d9dfe9;
+  border-radius: 6px;
+  color: #26354d;
+  background: #fff;
+  cursor: pointer;
+}
+
+.logout-button svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.workspace-content {
+  width: min(calc(100% - 40px), 960px);
+  margin: 0 auto;
+  padding: clamp(48px, 9vh, 88px) 0;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: #c90010;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.workspace-content h1 {
+  margin: 0;
+  color: #172238;
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.15;
+}
+
+.welcome-copy {
+  max-width: 620px;
+  margin: 14px 0 0;
+  color: #65728a;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+@media (max-width: 520px) {
+  .workspace-header {
+    min-height: 68px;
+    padding-inline: 16px;
+  }
+
+  .brand {
+    gap: 8px;
+    font-size: 16px;
+  }
+
+  .account-area {
+    gap: 9px;
+  }
+
+  .workspace-content {
+    width: calc(100% - 32px);
+  }
+}

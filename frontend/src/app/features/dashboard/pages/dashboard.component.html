@@ -1,0 +1,24 @@
+<main class="workspace">
+  <header class="workspace-header">
+    <a class="brand" routerLink="/dashboard" aria-label="Start Students, início">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <span>Start Students</span>
+    </a>
+    <div class="account-area">
+      <span class="profile-label">{{ sessionService.session?.perfil }}</span>
+      <button class="logout-button" type="button" (click)="logout()">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M10 17l5-5-5-5M15 12H3" />
+          <path d="M12 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5" />
+        </svg>
+        Sair
+      </button>
+    </div>
+  </header>
+
+  <section class="workspace-content" aria-labelledby="welcome-title">
+    <p class="eyebrow">SISTEMA DE GESTÃO DE ALUNOS</p>
+    <h1 id="welcome-title">Visão geral</h1>
+
+  </section>
+</main>
