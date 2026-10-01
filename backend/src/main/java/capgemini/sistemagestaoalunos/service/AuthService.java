@@ -1,11 +1,12 @@
 package capgemini.sistemagestaoalunos.service;
 
-import capgemini.sistemagestaoalunos.domain.usuario.Usuario;
 import capgemini.sistemagestaoalunos.dto.auth.LoginRequestDTO;
 import capgemini.sistemagestaoalunos.dto.auth.LoginResponseDTO;
-import capgemini.sistemagestaoalunos.repository.UsuarioRepository;
 import capgemini.sistemagestaoalunos.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -15,24 +16,27 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final UsuarioRepository usuarioRepository;
     private final JwtService jwtService;
 
     public LoginResponseDTO login(LoginRequestDTO requestDTO) {
 
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         requestDTO.nomeUsuario(),
                         requestDTO.senha()
                 )
         );
 
-        Usuario usuario = usuarioRepository
-                .findByNomeUsuario(requestDTO.nomeUsuario())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String perfil = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(authority -> authority.startsWith("ROLE_"))
+                .map(authority -> authority.substring("ROLE_".length()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Perfil do usuário autenticado não encontrado"));
 
-        String token = jwtService.generateToken(usuario);
+        String token = jwtService.generateToken(userDetails);
 
-        return new LoginResponseDTO(token, "Bearer", usuario.getPerfil().name());
+        return new LoginResponseDTO(token, "Bearer", perfil);
     }
 }

@@ -1,12 +1,12 @@
 package capgemini.sistemagestaoalunos.security;
 
-import capgemini.sistemagestaoalunos.domain.usuario.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -20,13 +20,19 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String generateToken(Usuario usuario){
+    public String generateToken(UserDetails userDetails){
        try {
            Algorithm algoritmo = Algorithm.HMAC256(secret);
+           String perfil = userDetails.getAuthorities().stream()
+                   .map(GrantedAuthority::getAuthority)
+                   .filter(authority -> authority.startsWith("ROLE_"))
+                   .map(authority -> authority.substring("ROLE_".length()))
+                   .findFirst()
+                   .orElseThrow(() -> new IllegalStateException("Perfil do usuário autenticado não encontrado"));
 
            return JWT.create()
-                   .withSubject(usuario.getNomeUsuario())
-                   .withClaim("perfil", usuario.getPerfil().name())
+                   .withSubject(userDetails.getUsername())
+                   .withClaim("perfil", perfil)
                    .withExpiresAt(generateExpirationDate())
                    .sign(algoritmo);
 

@@ -18,9 +18,9 @@ spring:
       enabled: true
       path: /h2-console
 
-  springdoc:
-    swagger-ui:
-      path: /swagger
-
 jwt:
   secret: mdcsdwqdfjbazingabqwnsdkocmweg
+
+springdoc:
+  swagger-ui:
+    path: /swagger
