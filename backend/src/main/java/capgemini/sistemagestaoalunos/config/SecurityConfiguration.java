@@ -68,6 +68,7 @@ public class SecurityConfiguration {
                                 )
                                 .permitAll()
                                 .requestMatchers(HttpMethod.POST, "/alunos").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/alunos/*/inativar").hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated()
                 )

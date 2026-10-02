@@ -51,4 +51,8 @@ public class Aluno {
         this.matricula = "ALU-" + UUID.randomUUID().toString().replace("-", "").toUpperCase();
         this.status = StatusAluno.ATIVO;
     }
+
+    public void inativar() {
+        this.status = StatusAluno.INATIVO;
+    }
 }

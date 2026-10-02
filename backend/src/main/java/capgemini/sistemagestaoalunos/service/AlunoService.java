@@ -8,10 +8,12 @@ import capgemini.sistemagestaoalunos.dto.aluno.CreateAlunoRequestDTO;
 import capgemini.sistemagestaoalunos.exception.ConflictException;
 import capgemini.sistemagestaoalunos.repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Locale;
 
@@ -63,6 +65,15 @@ public class AlunoService {
                 telefone
         );
 
+        return toResponse(alunoRepository.save(aluno));
+    }
+
+    @Transactional
+    public AlunoResponseDTO inativar(Long id) {
+        Aluno aluno = alunoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
+
+        aluno.inativar();
         return toResponse(alunoRepository.save(aluno));
     }
 
