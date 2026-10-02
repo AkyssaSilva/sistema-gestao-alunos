@@ -182,6 +182,7 @@
   background: #ed0011;
   font-size: 14px;
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
   transition: background-color 140ms ease;
 }
@@ -427,7 +428,7 @@
 
 .student-details {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin: 0;
 }

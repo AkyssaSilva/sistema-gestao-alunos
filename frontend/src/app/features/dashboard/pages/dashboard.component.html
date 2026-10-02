@@ -26,11 +26,12 @@
       </div>
 
       @if (podeCadastrar) {
-        <button class="new-student-button" type="button" title="Novo aluno"
-          aria-label="Novo aluno" (click)="mostrarAviso('O cadastro de alunos')">
+        <a class="new-student-button" routerLink="/alunos/novo"
+          [queryParams]="{ q: busca() || null, status: filtroStatus(), page: paginaAtual() }"
+          title="Novo aluno" aria-label="Novo aluno">
           <span aria-hidden="true">+</span>
           Novo Aluno
-        </button>
+        </a>
       }
     </div>
 
@@ -155,12 +156,11 @@
 
               @if (alunoExpandido() === aluno.id) {
                 <tr class="details-row" [id]="'student-details-' + aluno.id">
-                  <td colspan="4">
+                  <td colspan="3">
                     <dl class="student-details">
                       <div><dt>Email</dt><dd>{{ aluno.email }}</dd></div>
                       <div><dt>CPF</dt><dd>{{ aluno.cpf }}</dd></div>
                       <div><dt>Telefone</dt><dd>{{ aluno.telefone }}</dd></div>
-                      <div><dt>Matrícula</dt><dd>{{ aluno.matricula }}</dd></div>
                     </dl>
                   </td>
                 </tr>

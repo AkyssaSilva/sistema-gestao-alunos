@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Aluno, ConsultaAlunos, Pagina } from '../models/aluno.model';
+import { Aluno, ConsultaAlunos, CriarAlunoRequest, Pagina } from '../models/aluno.model';
 
 const PAGE_SIZE = 10;
 
@@ -23,6 +23,10 @@ export class AlunoService {
     }
 
     return this.http.get<Pagina<Aluno>>('/alunos', { params });
+  }
+
+  cadastrar(request: CriarAlunoRequest): Observable<Aluno> {
+    return this.http.post<Aluno>('/alunos', request);
   }
 
   inativar(id: number): Observable<Aluno> {

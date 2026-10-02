@@ -11,6 +11,13 @@ export interface Aluno {
   status: StatusAluno;
 }
 
+export interface CriarAlunoRequest {
+  nomeCompleto: string;
+  email: string;
+  cpf: string;
+  telefone: string;
+}
+
 export interface Pagina<T> {
   content: T[];
   number: number;
