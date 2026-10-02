@@ -3,6 +3,7 @@ package capgemini.sistemagestaoalunos.config;
 import capgemini.sistemagestaoalunos.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -66,6 +67,7 @@ public class SecurityConfiguration {
                                         "/v3/api-docs/**"
                                 )
                                 .permitAll()
+                                .requestMatchers(HttpMethod.POST, "/alunos").hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated()
                 )
