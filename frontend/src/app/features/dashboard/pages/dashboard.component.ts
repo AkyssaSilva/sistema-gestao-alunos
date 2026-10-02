@@ -44,6 +44,8 @@ export class DashboardComponent {
   readonly alunoExpandido = signal<number | null>(null);
   readonly inativandoId = signal<number | null>(null);
   readonly mensagem = signal('');
+  readonly modalAberto = signal(false);
+  readonly alunoSelecionado = signal<Aluno | null>(null);
 
   constructor() {
     const routeState = this.route.queryParamMap.pipe(
@@ -152,40 +154,56 @@ export class DashboardComponent {
     this.alunoExpandido.update((expandedId) => expandedId === id ? null : id);
   }
 
+  abrirModal(aluno: Aluno): void { 
+    this.alunoSelecionado.set(aluno); 
+    this.modalAberto.set(true);
+  }
+
+  fecharModal(): void {
+    this.modalAberto.set(false);
+    this.alunoSelecionado.set(null);
+  }
+
   mostrarAviso(acao: string): void {
     this.mensagem.set(`${acao} ainda não está disponível nesta versão.`);
   }
 
-  inativar(aluno: Aluno): void {
-    if (!this.podeInativar || this.inativandoId() !== null) {
-      return;
-    }
-
-    if (!window.confirm(`Inativar ${aluno.nomeCompleto}?`)) {
+  confirmarInativacao(): void {
+    const aluno = this.alunoSelecionado();
+    
+    if (!aluno || !this.podeInativar) {
       return;
     }
 
     this.inativandoId.set(aluno.id);
-    this.mensagem.set('');
-    this.alunoService
-      .inativar(aluno.id)
+
+    this.alunoService.inativar(aluno.id)
       .pipe(
         tap(() => {
-          this.mensagem.set(`${aluno.nomeCompleto} foi inativado.`);
+
+          this.fecharModal();
+
+          this.mensagem.set(
+            `${aluno.nomeCompleto} foi inativado.`
+          );
+
           this.refreshList.next();
         }),
         catchError((error: HttpErrorResponse) => {
-          this.mensagem.set(error.status === 404
-            ? 'Aluno não encontrado.'
-            : 'Não foi possível inativar o aluno. Tente novamente.');
+
+          this.mensagem.set(
+            error.status === 404
+              ? 'Aluno não encontrado.'
+              : 'Não foi possível inativar o aluno.'
+          );
+
           return EMPTY;
         }),
-        tap({ finalize: () => this.inativandoId.set(null) }),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         complete: () => this.inativandoId.set(null),
-        error: () => this.inativandoId.set(null),
+        error: () => this.inativandoId.set(null)
       });
   }
 

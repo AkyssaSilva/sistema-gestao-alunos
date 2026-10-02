@@ -578,6 +578,67 @@
   clip-path: inset(50%);
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 45%);
+}
+
+.delete-modal {
+  width: min(90vw, 700px);
+  padding: 40px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 40px rgb(0 0 0 / 25%);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.delete-modal h2 {
+  margin: 0 0 24px;
+  color: #172238;
+}
+
+.delete-modal p {
+  color: #34445e;
+  line-height: 1.6;
+}
+
+.modal-warning {
+  color: #65728a;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.cancel-button {
+  min-width: 140px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 10px;
+  background: #d9dde5;
+  cursor: pointer;
+}
+
+.confirm-button {
+  min-width: 140px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: #ed0011;
+  cursor: pointer;
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

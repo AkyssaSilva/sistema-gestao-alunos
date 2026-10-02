@@ -140,7 +140,7 @@
                         [disabled]="inativandoId() === aluno.id"
                         [title]="inativandoId() === aluno.id ? 'Inativando aluno' : 'Inativar aluno'"
                         [attr.aria-label]="'Inativar aluno ' + aluno.nomeCompleto"
-                        (click)="inativar(aluno)">
+                        (click)="abrirModal(aluno)">
                         @if (inativandoId() === aluno.id) {
                           <span class="button-spinner" aria-hidden="true"></span>
                         } @else {
@@ -197,4 +197,51 @@
       </footer>
     }
   </section>
+
+  @if (modalAberto() && alunoSelecionado(); as aluno) {
+    <div
+      class="modal-backdrop"
+      (click)="fecharModal()">
+      
+      <div
+        class="delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-title"
+        (click)="$event.stopPropagation()">
+       
+        <h2 id="delete-title">
+          Confirmar Exclusão
+        </h2>
+        
+        <p>
+          Deseja realmente excluir o aluno
+          <strong>{{ aluno.nomeCompleto }}</strong>?
+        </p>
+        
+        <div class="modal-actions">
+          
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="fecharModal()">
+            Cancelar
+          </button>
+          
+          <button
+            type="button"
+            class="confirm-button"
+            [disabled]="inativandoId() === aluno.id"
+            (click)="confirmarInativacao()">
+
+            @if (inativandoId() === aluno.id) {
+              <span class="button-spinner"></span>
+            } @else {
+              Excluir
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </main>
