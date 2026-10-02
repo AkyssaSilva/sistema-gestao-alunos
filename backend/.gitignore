@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Banco H2 local ###
-backend/data/
+/data/
