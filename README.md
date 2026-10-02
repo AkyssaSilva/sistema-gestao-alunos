@@ -13,24 +13,29 @@ O projeto é composto por:
 - Autenticação de usuários
 - Controle de acesso por perfil (ADMIN e LEITOR)
 - Cadastro de alunos
-- Consulta de alunos
-- Atualização de alunos
 - Inativação de alunos
 - Listagem de alunos
-- Documentação da API com Swagger/OpenAPI
 
-## Usuários para Acesso
+## Banco de Dados
 
-Para fins de desenvolvimento e testes, a aplicação possui os seguintes usuários previamente cadastrados:
+O banco é criado automaticamente na primeira execução da aplicação.
 
-### Administrador
+### Console H2
 
-- Usuário: `Admin01`
-- Senha: `senhaSegura123`
+URL:
 
-### Leitor
-- Usuário: `Usuario02`
-- Senha: `senhaSegura321`
+```text
+http://localhost:8080/h2-console
+```
+
+Configurações:
+
+```text
+JDBC URL: jdbc:h2:file:./data/sistema-gestao-alunos
+User: sa
+Password:
+```
+
 
 ## Executando o Projeto
 
@@ -76,6 +81,18 @@ Aplicação disponível em:
 ```text
 http://localhost:4200/login
 ```
+## Usuários para Acesso
+
+Para fins de desenvolvimento e testes, a aplicação possui os seguintes usuários previamente cadastrados:
+
+### Administrador
+
+- Usuário: `Admin01`
+- Senha: `senhaSegura123`
+
+### Leitor
+- Usuário: `Usuario02`
+- Senha: `senhaSegura321`
 
 ## Documentação da API
 
@@ -83,12 +100,4 @@ Swagger/OpenAPI:
 
 ```text
 http://localhost:8080/swagger
-```
-
-## Banco de Dados
-
-Console H2:
-
-```text
-http://localhost:8080/h2-console
 ```
