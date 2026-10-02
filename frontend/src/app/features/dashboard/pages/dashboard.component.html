@@ -1,0 +1,247 @@
+<main class="workspace">
+  <header class="workspace-header">
+    <a class="brand" routerLink="/dashboard" aria-label="Start Students, início">
+      <span>Start Students</span>
+    </a>
+    <div class="account-area">
+      <span class="profile-label">{{ sessionService.session?.perfil }}</span>
+      <button class="logout-button" type="button" (click)="logout()">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M10 17l5-5-5-5M15 12H3" />
+          <path d="M12 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5" />
+        </svg>
+        Sair
+      </button>
+    </div>
+  </header>
+
+  <section class="students-shell" aria-labelledby="students-title">
+    <div class="students-heading">
+      <div>
+        <p class="eyebrow">SISTEMA DE GESTÃO DE ALUNOS</p>
+        <div class="title-row">
+          <h1 id="students-title">Alunos</h1>
+          <span class="total-count">{{ totalRegistros() }} registros</span>
+        </div>
+      </div>
+
+      @if (podeCadastrar) {
+        <a class="new-student-button" routerLink="/alunos/novo"
+          [queryParams]="{ q: busca() || null, status: filtroStatus(), page: paginaAtual() }"
+          title="Novo aluno" aria-label="Novo aluno">
+          <span aria-hidden="true">+</span>
+          Novo Aluno
+        </a>
+      }
+    </div>
+
+    <div class="list-toolbar">
+      <div class="search-field">
+        <label class="sr-only" for="student-search">Buscar alunos por nome ou matrícula</label>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="10.8" cy="10.8" r="6.8" />
+          <path d="m16 16 5 5" />
+        </svg>
+        <input
+          id="student-search"
+          type="search"
+          autocomplete="off"
+          [value]="busca()"
+          placeholder="Buscar por nome ou matrícula..."
+          aria-label="Buscar alunos por nome ou matrícula"
+          (input)="onSearchInput($event)"
+        />
+        @if (busca()) {
+          <button class="clear-search-button" type="button" title="Limpar busca"
+            aria-label="Limpar busca" (click)="clearSearch()">×</button>
+        }
+      </div>
+
+      <label class="status-filter" for="status-filter">
+        <span>Status</span>
+        <select id="status-filter" [value]="filtroStatus()" (change)="changeStatus($event)">
+          <option value="ATIVOS">Ativos</option>
+          <option value="INATIVOS">Inativos</option>
+          <option value="TODOS">Todos</option>
+        </select>
+      </label>
+    </div>
+
+    @if (mensagem()) {
+      <p class="action-message" role="status" aria-live="polite">{{ mensagem() }}</p>
+    }
+
+    @if (carregando()) {
+      <div class="list-state" role="status" aria-live="polite">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <span>Carregando alunos...</span>
+      </div>
+    } @else if (erro()) {
+      <div class="list-state error-state" role="alert">
+        <p>Não foi possível carregar a lista de alunos.</p>
+        <button class="retry-button" type="button" (click)="retry()">Tentar novamente</button>
+      </div>
+    } @else if (alunos().length === 0) {
+      <div class="list-state empty-state" role="status">
+        <span class="empty-mark" aria-hidden="true">—</span>
+        <h2>Nenhum aluno encontrado</h2>
+        <p>Altere a busca ou o filtro de status e tente novamente.</p>
+      </div>
+    } @else {
+      <div class="table-scroll" role="region" aria-label="Lista de alunos" tabindex="0">
+        <table class="students-table">
+          <caption class="sr-only">Alunos encontrados com busca, status, matrícula e ações disponíveis.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Matrícula</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Status</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (aluno of alunos(); track aluno.id) {
+              <tr>
+                <td class="registration-cell">{{ aluno.matricula }}</td>
+                <td class="name-cell">{{ aluno.nomeCompleto }}</td>
+                <td>
+                  <span class="status-label" [class.status-active]="aluno.status === 'ATIVO'"
+                    [class.status-inactive]="aluno.status === 'INATIVO'">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    {{ aluno.status === 'ATIVO' ? 'Ativo' : 'Inativo' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="row-actions">
+                    <button class="icon-button view-button" type="button"
+                      [title]="alunoExpandido() === aluno.id ? 'Ocultar detalhes' : 'Ver detalhes'"
+                      [attr.aria-label]="alunoExpandido() === aluno.id ? 'Ocultar detalhes de ' + aluno.nomeCompleto : 'Ver detalhes de ' + aluno.nomeCompleto"
+                      [attr.aria-expanded]="alunoExpandido() === aluno.id"
+                      [attr.aria-controls]="'student-details-' + aluno.id"
+                      (click)="alternarDetalhes(aluno.id)">
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    </button>
+
+                    @if (podeEditar) {
+                      <button class="icon-button edit-button" type="button" title="Editar aluno"
+                        [attr.aria-label]="'Editar aluno ' + aluno.nomeCompleto"
+                        (click)="mostrarAviso('A edição de alunos')">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="m14 5 5 5M4 20l4.2-.9L19 8.3a2.1 2.1 0 0 0-3-3L5.2 16.1 4 20Z" />
+                        </svg>
+                      </button>
+                    }
+
+                    @if (podeInativar && aluno.status === 'ATIVO') {
+                      <button class="icon-button deactivate-button" type="button"
+                        [disabled]="inativandoId() === aluno.id"
+                        [title]="inativandoId() === aluno.id ? 'Inativando aluno' : 'Inativar aluno'"
+                        [attr.aria-label]="'Inativar aluno ' + aluno.nomeCompleto"
+                        (click)="abrirModal(aluno)">
+                        @if (inativandoId() === aluno.id) {
+                          <span class="button-spinner" aria-hidden="true"></span>
+                        } @else {
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 7h16M9 7V4h6v3m-9 0 1 13h10l1-13M10 11v5m4-5v5" />
+                          </svg>
+                        }
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+
+              @if (alunoExpandido() === aluno.id) {
+                <tr class="details-row" [id]="'student-details-' + aluno.id">
+                  <td colspan="3">
+                    <dl class="student-details">
+                      <div><dt>Email</dt><dd>{{ aluno.email }}</dd></div>
+                      <div><dt>CPF</dt><dd>{{ aluno.cpf }}</dd></div>
+                      <div><dt>Telefone</dt><dd>{{ aluno.telefone }}</dd></div>
+                    </dl>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="list-footer">
+        <p class="result-count" aria-live="polite">
+          Exibindo {{ primeiroRegistro() }}–{{ ultimoRegistro() }} de {{ totalRegistros() }} alunos
+        </p>
+        @if (totalPaginas() > 1) {
+          <nav class="pagination" aria-label="Paginação da lista de alunos">
+            <button class="page-button arrow-button" type="button" title="Página anterior"
+              aria-label="Página anterior" [disabled]="paginaAtual() === 1"
+              (click)="goToPage(paginaAtual() - 1)">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            @for (pagina of paginasVisiveis(); track pagina) {
+              <button class="page-button" type="button" [class.current-page]="pagina === paginaAtual()"
+                [attr.aria-current]="pagina === paginaAtual() ? 'page' : null"
+                [attr.aria-label]="'Página ' + pagina" [disabled]="pagina === paginaAtual()"
+                (click)="goToPage(pagina)">{{ pagina }}</button>
+            }
+            <button class="page-button arrow-button" type="button" title="Próxima página"
+              aria-label="Próxima página" [disabled]="paginaAtual() >= totalPaginas()"
+              (click)="goToPage(paginaAtual() + 1)">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+            </button>
+          </nav>
+        }
+      </footer>
+    }
+  </section>
+
+  @if (modalAberto() && alunoSelecionado(); as aluno) {
+    <div
+      class="modal-backdrop"
+      (click)="fecharModal()">
+      
+      <div
+        class="delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-title"
+        (click)="$event.stopPropagation()">
+       
+        <h2 id="delete-title">
+          Confirmar Exclusão
+        </h2>
+        
+        <p>
+          Deseja realmente excluir o aluno
+          <strong>{{ aluno.nomeCompleto }}</strong>?
+        </p>
+        
+        <div class="modal-actions">
+          
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="fecharModal()">
+            Cancelar
+          </button>
+          
+          <button
+            type="button"
+            class="confirm-button"
+            [disabled]="inativandoId() === aluno.id"
+            (click)="confirmarInativacao()">
+
+            @if (inativandoId() === aluno.id) {
+              <span class="button-spinner"></span>
+            } @else {
+              Excluir
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</main>

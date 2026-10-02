@@ -1,53 +1,103 @@
-# Sistema de Gestão de Alunos
+# Start Students
 
-Sistema desenvolvido para gerenciamento de alunos, permitindo cadastro, consulta, atualização, inativação e listagem de registros, com controle de acesso por perfil de usuário.
+Sistema web desenvolvido para gerenciar o ciclo de vida dos alunos, permitindo cadastro, consulta, atualização e inativação de registros.
 
-## Tecnologias
+O projeto é composto por:
 
-- Java
-- Spring Boot
-- H2
+- Frontend: Angular
+- Backend: Java + Spring Boot
+- Banco de Dados: H2
 
-## Execução
+## Funcionalidades
 
-Clone o repositório:
+- Autenticação de usuários
+- Controle de acesso por perfil (ADMIN e LEITOR)
+- Cadastro de alunos
+- Inativação de alunos
+- Listagem de alunos
 
-```bash
-git clone <url-do-repositorio>
+## Banco de Dados
+
+O banco é criado automaticamente na primeira execução da aplicação.
+
+### Console H2
+
+URL:
+
+```text
+http://localhost:8080/h2-console
 ```
 
-Acesse o diretório do projeto:
+Configurações:
+
+```text
+JDBC URL: jdbc:h2:file:./data/sistema-gestao-alunos
+User: sa
+Password:
+```
+
+
+## Executando o Projeto
+
+### Backend
 
 ```bash
 cd backend
 ```
 
-Execute a aplicação:
+Inicie a aplicação:
 
 ```bash
-.\mvnw spring-boot:run
+./mvnw spring-boot:run
 ```
 
-A API estará disponível em:
+
+API disponível em:
 
 ```text
 http://localhost:8080
 ```
 
+### Frontend
+
+```bash
+cd frontend
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Inicie a aplicação:
+
+```bash
+npm start
+```
+
+Aplicação disponível em:
+
+```text
+http://localhost:4200/login
+```
+## Usuários para Acesso
+
+Para fins de desenvolvimento e testes, a aplicação possui os seguintes usuários previamente cadastrados:
+
+### Administrador
+
+- Usuário: `Admin01`
+- Senha: `senhaSegura123`
+
+### Leitor
+- Usuário: `Usuario02`
+- Senha: `senhaSegura321`
+
 ## Documentação da API
 
-A documentação interativa da API pode ser acessada em:
+Swagger/OpenAPI:
 
 ```text
 http://localhost:8080/swagger
-```
-
-## Banco de Dados
-
-O projeto utiliza o banco de dados H2 em memória para desenvolvimento e testes.
-
-Console H2:
-
-```text
-http://localhost:8080/h2-console
 ```
