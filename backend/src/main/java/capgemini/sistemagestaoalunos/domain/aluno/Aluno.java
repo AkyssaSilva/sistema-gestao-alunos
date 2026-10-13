@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -25,15 +26,18 @@ public class Aluno {
     private Long id;
 
     @Column(name = "nome_completo", nullable = false, length = 120)
+    @Setter
     private String nomeCompleto;
 
     @Column(nullable = false, unique = true, length = 254)
+    @Setter
     private String email;
 
     @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
     @Column(nullable = false, length = 20)
+    @Setter
     private String telefone;
 
     @Column(nullable = false, unique = true, updatable = false, length = 36)
@@ -41,6 +45,7 @@ public class Aluno {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
+    @Setter
     private StatusAluno status;
 
     public Aluno(String nomeCompleto, String email, String cpf, String telefone) {

@@ -3,6 +3,7 @@ package capgemini.sistemagestaoalunos.controller;
 import capgemini.sistemagestaoalunos.dto.aluno.AlunoResponseDTO;
 import capgemini.sistemagestaoalunos.dto.aluno.CreateAlunoRequestDTO;
 import capgemini.sistemagestaoalunos.domain.aluno.FiltroStatusAluno;
+import capgemini.sistemagestaoalunos.dto.aluno.UpdateAlunoDTO;
 import capgemini.sistemagestaoalunos.service.AlunoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,18 +36,18 @@ public class AlunoController {
 
     private final AlunoService alunoService;
 
-        @GetMapping
-        @SecurityRequirement(name = "bearerAuth")
-        public Page<AlunoResponseDTO> listar(
-            @RequestParam(required = false) String nomeCompleto,
-            @RequestParam(required = false) String matricula,
-            @RequestParam(defaultValue = "ATIVOS") FiltroStatusAluno status,
-            @ParameterObject
-            @PageableDefault(size = 10, sort = "nomeCompleto", direction = Sort.Direction.ASC)
-            Pageable pageable
-        ) {
+    @GetMapping
+    @SecurityRequirement(name = "bearerAuth")
+    public Page<AlunoResponseDTO> listar(
+        @RequestParam(required = false) String nomeCompleto,
+        @RequestParam(required = false) String matricula,
+        @RequestParam(defaultValue = "ATIVOS") FiltroStatusAluno status,
+        @ParameterObject
+        @PageableDefault(size = 10, sort = "nomeCompleto", direction = Sort.Direction.ASC)
+        Pageable pageable
+    ) {
         return alunoService.listar(nomeCompleto, matricula, status, pageable);
-        }
+    }
 
     @PatchMapping("/{id}/inativar")
     @SecurityRequirement(name = "bearerAuth")
@@ -54,9 +55,24 @@ public class AlunoController {
         return ResponseEntity.ok(alunoService.inativar(id));
     }
 
-    @PostMapping    
+    @PostMapping
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<AlunoResponseDTO> cadastrar(@Valid @RequestBody CreateAlunoRequestDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(alunoService.cadastrar(request));
+    }
+
+    @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<AlunoResponseDTO> exibir(@PathVariable Long id) {
+        return ResponseEntity.ok(alunoService.exibirAlunoPorID(id));
+    }
+
+    @PatchMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<AlunoResponseDTO> editar(
+        @PathVariable long id,
+        @Valid @RequestBody UpdateAlunoDTO requestDTO)
+    {
+        return ResponseEntity.ok(alunoService.atualizarAluno(id, requestDTO));
     }
 }
