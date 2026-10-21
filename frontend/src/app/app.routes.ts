@@ -23,7 +23,7 @@ export const routes: Routes = [
 		canActivate: [authGuard, permissionGuard],
 		canDeactivate: [unsavedChangesGuard],
 		data: { permissions: ['ALUNOS:CREATE'] },
-		loadComponent: () => import('./features/alunos/pages/aluno-create.component').then((module) => module.AlunoCreateComponent),
+		loadComponent: () => import('./features/alunos/pages/aluno-create/aluno-create.component').then((module) => module.AlunoCreateComponent),
 	},
 	{ path: '**', redirectTo: 'login' },
 ];
