@@ -1,0 +1,116 @@
+<div class="backdrop">
+  <section
+    class="modal-container"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-modal"
+  >
+    <header class="modal-header">
+      <h3 id="titulo-modal">Detalhes do Aluno</h3>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="atualizarAluno()">
+      <figure class="student-photo-container">
+        <img
+          src="/images/userDefault.png"
+          alt="Foto do aluno"
+          class="student-photo"
+        />
+      </figure>
+
+      <div class="form-group">
+        <label for="nome">Nome completo</label>
+        <input
+          type="text"
+          id="nome"
+          name="nome"
+          formControlName="nomeCompleto"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="cpf">CPF</label>
+        <input
+          type="text"
+          id="cpf"
+          name="cpf"
+          formControlName="cpf"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          formControlName="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input
+          type="text"
+          id="telefone"
+          name="telefone"
+          formControlName="telefone"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="matricula">Matrícula</label>
+        <input
+          type="text"
+          id="matricula"
+          name="matricula"
+          formControlName="matricula"
+        />
+      </div>
+
+      <fieldset class="form-group">
+        <legend>Status</legend>
+
+        <div class="radio-group">
+          <div class="radio-option">
+            <input
+              type="radio"
+              id="status-ativo"
+              formControlName="status"
+              value="ATIVO"
+              
+            />
+            <label for="status-ativo">Ativo</label>
+          </div>
+
+          <div class="radio-option">
+            <input
+              type="radio"
+              id="status-inativo"
+              formControlName="status"
+              value="INATIVO"
+            />
+            <label for="status-inativo">Inativo</label>
+          </div>
+        </div>
+      </fieldset>
+
+      @if (mensagemErro()){
+        <p class="erro">{{ mensagemErro() }}</p>
+    }
+
+      <footer class="modal-actions">
+        <button type="submit" [disabled]="!podeSalvar">
+          {{ salvando() ? 'Salvando...' : 'Salvar' }}
+        </button>
+
+        <button
+          type="button"
+          (click)="fecharModal()"
+        >
+          Cancelar
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>

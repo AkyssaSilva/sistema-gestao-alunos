@@ -8,6 +8,7 @@ import { AuthorizationService } from '../../auth/services/authorization.service'
 import { AuthService } from '../../auth/services/auth.service';
 import { AlunoService } from '../../alunos/services/aluno.service';
 import { Aluno, ConsultaAlunos, FiltroStatusAluno, Pagina } from '../../alunos/models/aluno.model';
+import {AlunoEdicaoComponent} from "../../alunos/pages/aluno-edicao/aluno-edicao.component";
 
 interface EstadoDaLista {
   busca: string;
@@ -17,7 +18,7 @@ interface EstadoDaLista {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink],
+  imports: [RouterLink, AlunoEdicaoComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -46,6 +47,7 @@ export class DashboardComponent {
   readonly mensagem = signal('');
   readonly modalAberto = signal(false);
   readonly alunoSelecionado = signal<Aluno | null>(null);
+  readonly alunoEmEdicao = signal<Aluno | null>(null);
 
   constructor() {
     const routeState = this.route.queryParamMap.pipe(
@@ -164,8 +166,14 @@ export class DashboardComponent {
     this.alunoSelecionado.set(null);
   }
 
-  mostrarAviso(acao: string): void {
-    this.mensagem.set(`${acao} ainda não está disponível nesta versão.`);
+  abrirModalEdicao(aluno: Aluno): void{
+    this.alunoEmEdicao.set(aluno);
+    document.body.style.overflow = 'hidden'; 
+  }
+
+  fecharModalEdicao(): void{
+    this.alunoEmEdicao.set(null);
+    document.body.style.overflow = 'auto';
   }
 
   confirmarInativacao(): void {

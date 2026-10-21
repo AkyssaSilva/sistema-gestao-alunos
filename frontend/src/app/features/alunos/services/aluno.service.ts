@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Aluno, ConsultaAlunos, CriarAlunoRequest, Pagina } from '../models/aluno.model';
+import { Aluno, ConsultaAlunos, CriarAlunoRequest, Pagina, AtualizarAlunoRequest} from '../models/aluno.model';
 
 const PAGE_SIZE = 10;
 
@@ -31,5 +31,9 @@ export class AlunoService {
 
   inativar(id: number): Observable<Aluno> {
     return this.http.patch<Aluno>(`/alunos/${id}/inativar`, {});
+  }
+
+  atualizar(id: number, request: AtualizarAlunoRequest): Observable<Aluno> {
+    return this.http.patch<Aluno>(`/alunos/${id}`, request);
   }
 }

@@ -1,0 +1,199 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.modal-container {
+  width: 90%;
+  max-width: 400px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  margin-bottom: 12px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.student-photo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.student-photo {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form-group label,
+legend {
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"] {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input[id="cpf"],
+.form-group input[id="matricula"] {
+  background-color: #dddddd;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+}
+
+.radio-group {
+  display: flex;
+  gap: 24px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radio-option label {
+  margin: 0;
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.modal-actions button {
+  flex: 1;
+  height: 42px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modal-actions button[type="button"] {
+  background: #e8e8e8;
+  color: #444;
+}
+
+.modal-actions button[type="submit"] {
+  background: #ff0000;
+  color: white;
+}
+
+.modal-actions button[type="button"]:hover {
+  background: #dcdcdc;
+}
+
+.modal-actions button[type="submit"]:hover {
+  background: #d60000;
+}
+
+.modal-actions button[type="submit"]:disabled {
+  background: #fca5a5;
+  color: white;
+  cursor: not-allowed;
+}
+
+.erro {
+  color: red;
+}
+
+@media (max-height: 850px) {
+  .modal-container {
+    padding: 16px;
+  }
+
+  .student-photo {
+    width: 75px;
+    height: 75px;
+  }
+
+  .form-group {
+    margin-bottom: 8px;
+  }
+
+  .form-group input {
+    height: 34px;
+  }
+
+  .modal-header {
+    margin-bottom: 8px;
+  }
+
+  .student-photo-container {
+    margin-bottom: 8px;
+  }
+
+  .modal-actions {
+    margin-top: 8px;
+  }
+
+  .modal-actions button {
+    height: 38px;
+  }
+}
+
+@media (max-height: 700px) {
+  .student-photo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-group label,
+  legend {
+    font-size: 0.85rem;
+  }
+
+  .form-group input {
+    height: 32px;
+  }
+}

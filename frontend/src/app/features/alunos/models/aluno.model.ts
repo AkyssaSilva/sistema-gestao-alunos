@@ -31,3 +31,10 @@ export interface ConsultaAlunos {
   status: FiltroStatusAluno;
   pagina: number;
 }
+
+export interface AtualizarAlunoRequest {
+  nomeCompleto: string;
+  email: string;
+  telefone: string;
+  status: StatusAluno;
+}

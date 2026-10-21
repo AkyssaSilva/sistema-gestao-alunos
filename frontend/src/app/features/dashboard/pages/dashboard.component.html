@@ -128,7 +128,7 @@
                     @if (podeEditar) {
                       <button class="icon-button edit-button" type="button" title="Editar aluno"
                         [attr.aria-label]="'Editar aluno ' + aluno.nomeCompleto"
-                        (click)="mostrarAviso('A edição de alunos')">
+                        (click)="abrirModalEdicao(aluno)">
                         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                           <path d="m14 5 5 5M4 20l4.2-.9L19 8.3a2.1 2.1 0 0 0-3-3L5.2 16.1 4 20Z" />
                         </svg>
@@ -242,6 +242,16 @@
           </button>
         </div>
       </div>
+    </div>
+  }
+
+  @if(alunoEmEdicao(); as aluno) {
+    <div>
+      <app-aluno-edicao
+      [aluno]="aluno"
+      (fechar)="fecharModalEdicao()"
+      (atualizado)="retry()"
+      ></app-aluno-edicao>
     </div>
   }
 </main>
