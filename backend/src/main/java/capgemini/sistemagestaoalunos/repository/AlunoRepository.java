@@ -14,25 +14,25 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     boolean existsByEmailIgnoreCase(String email);
 
-        @Query(
-            value = """
-                select aluno from Aluno aluno
-                where (:nomeCompleto is null or lower(aluno.nomeCompleto) like lower(concat('%', :nomeCompleto, '%')))
-                  and (:matricula is null or upper(aluno.matricula) like upper(concat(:matricula, '%')))
-                  and (:todos = true or aluno.status = :status)
-                """,
-            countQuery = """
-                select count(aluno) from Aluno aluno
-                where (:nomeCompleto is null or lower(aluno.nomeCompleto) like lower(concat('%', :nomeCompleto, '%')))
-                  and (:matricula is null or upper(aluno.matricula) like upper(concat(:matricula, '%')))
-                  and (:todos = true or aluno.status = :status)
-                """
-        )
-        Page<Aluno> buscar(
-            @Param("nomeCompleto") String nomeCompleto,
-            @Param("matricula") String matricula,
-            @Param("todos") boolean todos,
-            @Param("status") StatusAluno status,
-            Pageable pageable
-        );
+    @Query(
+        value = """
+            select aluno from Aluno aluno
+            where (:nomeCompleto is null or lower(aluno.nomeCompleto) like lower(concat('%', :nomeCompleto, '%')))
+              and (:matricula is null or upper(aluno.matricula) like upper(concat(:matricula, '%')))
+              and (:todos = true or aluno.status = :status)
+            """,
+        countQuery = """
+            select count(aluno) from Aluno aluno
+            where (:nomeCompleto is null or lower(aluno.nomeCompleto) like lower(concat('%', :nomeCompleto, '%')))
+              and (:matricula is null or upper(aluno.matricula) like upper(concat(:matricula, '%')))
+              and (:todos = true or aluno.status = :status)
+            """
+    )
+    Page<Aluno> buscar(
+        @Param("nomeCompleto") String nomeCompleto,
+        @Param("matricula") String matricula,
+        @Param("todos") boolean todos,
+        @Param("status") StatusAluno status,
+        Pageable pageable
+    );
 }

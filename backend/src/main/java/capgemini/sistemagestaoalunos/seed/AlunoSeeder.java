@@ -17,12 +17,13 @@ public class AlunoSeeder implements CommandLineRunner {
         for (int numero = 1; numero <= 25; numero++) {
             String sufixo = String.format("%02d", numero);
             String email = "aluno" + sufixo + "@example.test";
+            String cpf = gerarCpf(234_560_000 + numero);
 
-            if (!alunoRepository.existsByEmailIgnoreCase(email)) {
+            if (!alunoRepository.existsByCpf(cpf)) {
                 alunoRepository.save(new Aluno(
                         "Aluno de Exemplo " + sufixo,
                         email,
-                        gerarCpf(234_560_000 + numero),
+                        cpf,
                         "1198765" + String.format("%04d", numero)
                 ));
             }
